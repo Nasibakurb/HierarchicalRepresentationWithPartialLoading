@@ -1,0 +1,268 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model IEnumerable<Test.Models.Category>
+<style>
+
+
+    .subcategoryList {
+        display: none;
+    }
+</style>
+
+    <h4 class="mb-3 text-muted">Создание категории</h4>
+    <form id="categoryForm" class="mb-5">
+        <div class="mb-3">
+            <label class="form-label">Название:</label>
+            <input type="text" name="name" class="form-control" />
+        </div>
+            <button class="btn btn-primary" id="createCategory">Создать</button>
+    </form>
+
+    @foreach (var category in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-body categoryContainer d-flex justify-content-between align-items-center">
+                <h2 class="card-title">@category.Name</h2>
+                <div>
+                <button class="btn btn-success addButn" data-id="@category.Id">+</button>
+                <button class="btn btn-danger deleteButn" data-id="@category.Id">-</button>
+                <button class="btn btn-warning editButn" data-toggle="modal" data-target="#editModal" data-id="@category.Id">!</button>
+                <button class="btn btn-primary showSubcButn">=</button>
+                </div>
+            </div>
+            <ul class="list-group list-group-flush subcategoryList">
+                @foreach (var subcategory in category.Subcategories)
+                {
+                <div class="card-body categoryContainer d-flex justify-content-between align-items-center">
+                 <li class="list-group-item">@subcategory.Name</li>
+                <div>
+                    <button class="btn btn-danger deleteSubcButn" data-id="@subcategory.Id" data-categoryId="@category.Id">-</button>
+                    <button class="btn btn-info editSubcButn" data-id="@subcategory.Id" data-categoryid="@category.Id">!</button>
+
+                
+                </div>
+                </div>
+                }
+            </ul>
+        </div>
+    }
+
+<!-- Модальное окно -->
+<div id="editModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="editCategoryForm">
+                    <div class="mb-3">
+                        <label for="editCategoryName" class="form-label">Название:</label>
+                        <input type="text" id="editCategoryName" name="Name" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="addSubcategoryModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить подкатегорию</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="addSubcategoryFormContainer">
+                <!-- Здесь будет загружаться частичное представление -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="editSubcategoryModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить подкатегорию</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="addSubcategoryFormContainer">
+                <!-- Здесь будет загружаться частичное представление -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+<script>
+        $(document).ready(function () {
+            // Редактирование подкатегории
+            $(".editSubcButn").on("click", function (e) {
+                e.preventDefault();
+                var subcategoryId = $(this).data("id");
+                var categoryId = $(this).data("categoryid");
+
+                // Загружаем частичное представление в модальное окно
+                $.get('@Url.Action("EditSubcategoryPartial", "Subcategory")', { subcategoryId: subcategoryId, categoryId: categoryId })
+                    .done(function (data) {
+                        $('#editSubcategoryModal .modal-body').html(data);
+                        $('#editSubcategoryModal').modal('show');
+                    })
+                    .fail(function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    });
+            });
+
+            // Отправка данных формы редактирования подкатегории через AJAX
+            $('#editSubcategoryModal').on('submit', '#EditSubcategoryForm', function (e) {
+                e.preventDefault();
+                var subcategoryId = $('#subcategoryId').val();
+                var categoryId = $('#categoryId').val();
+                var formData = $(this).serialize();
+                formData += "&CategoryId=" + categoryId + "&Id=" + subcategoryId;
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Edit", "Subcategory")',
+                    data: formData,
+                    success: function (response) {
+                        $('#addSubcategoryModal').modal('hide');
+                        location.reload();
+                        // Дополнительные действия после успешного редактирования
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+      
+
+
+
+
+
+
+
+
+      
+        $(".deleteSubcButn").on("click", function (e) { /*Удаление подкатегории*/
+            e.preventDefault();
+            var categoryId = $(this).attr("data-categoryId");
+            var subcategoryId = $(this).attr("data-id");
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete", "Subcategory")',
+                data: { id: subcategoryId, categoryId: categoryId },
+                success: function (response) {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Ошибка при удалении подкатегории:", error);
+                }
+            });
+        });
+
+
+
+
+
+        $(".addButn").on("click", function () { /*Добавление подкатегории*/
+            var categoryId = $(this).data("id");
+            $.get('@Url.Action("CreateSubcategoryPartial", "Subcategory")', { categoryId: categoryId }, function (data) {
+                $("#addSubcategoryModal .modal-body").html(data);
+                $("#addSubcategoryModal").modal("show");
+            });
+        });
+        $(document).on("submit", "#createSubcategoryForm", function (e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+            var categoryId = $(this).find("#categoryId").val(); // Получаем categoryId из скрытого поля формы
+            formData += "&categoryId=" + categoryId; // Добавляем categoryId в данные запроса
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create", "Subcategory")',
+                data: formData,
+                success: function (response) {
+                    location.reload(); // Перезагрузка страницы после успешного создания подкатегории
+                }
+            });
+        });
+
+
+            
+       
+
+
+    
+        $(document).ready(function () {/* Редактирование категории*/
+            $(".editButn").on("click", function (e) {
+                e.preventDefault();
+                var categoryId = $(this).data("id");
+                $("#editModal").modal("show");
+                $("#editCategoryForm").data("categoryId", categoryId); // Сохраняем ID категории в data атрибуте формы
+            });
+
+            // Отправка данных формы редактирования через AJAX
+            $("#editCategoryForm").submit(function (e) {
+                e.preventDefault();
+                var categoryId = $(this).data("categoryId"); // Получаем ID категории из data атрибута формы
+                var formData = $(this).serialize(); // Получаем данные формы
+                formData += "&Id=" + categoryId; // Добавляем ID категории к данным формы
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("EditCategory", "Home")',
+                    data: formData,
+                    success: function (response) {
+                        location.reload(); // Перезагрузка страницы после успешного редактирования
+                    },
+                });
+            });
+        });
+
+
+
+        $(".deleteButn").on("click", function (e) {
+            e.preventDefault();
+            var categoryId = $(this).data("id"); // Проверьте здесь, что значение правильно получается
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteCategory", "Home")',
+                data: { id: categoryId }, // Проверьте здесь, что id правильно передается в запросе
+                success: function (response) {
+                    location.reload(); // Перезагрузка страницы
+                },
+            });
+        });
+
+    $(document).ready(function () {
+    $('.showSubcButn').on('click', function () {
+        var subcategoryList = $(this).closest('.card-body').next('.subcategoryList');
+        subcategoryList.slideToggle();
+        });
+    });
+    
+    $("#createCategory").on("click", function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+                url: '@Url.Action("CreateCategory", "Home")',
+            data: $("#categoryForm").serialize(),
+            success: function (response) {
+                location.reload(); // Перезагрузка страницы
+            },
+        });
+    });
+
+ 
+    
+    </script>
+}
