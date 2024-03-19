@@ -1,0 +1,11 @@
+﻿﻿
+@model HierarchicalView.Domain.ViewModel.CreateSubcategoryModel
+
+<form id="createSubcategoryForm">
+    <div class="mb-3">
+        <label for="subcategoryName" class="form-label">Название подкатегории:</label>
+        <input type="text" id="subcategoryName" name="Name" class="form-control" />
+    </div>
+    <input  type="hidden" id="categoryId" name="CategoryId" value="@ViewData["CategoryEntityId"]" />  
+    <button type="submit" class="btn btn-primary">Добавить подкатегорию</button>
+</form>

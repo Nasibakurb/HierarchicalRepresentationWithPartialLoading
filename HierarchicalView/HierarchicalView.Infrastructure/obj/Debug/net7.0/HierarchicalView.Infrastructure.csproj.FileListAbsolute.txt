@@ -1,0 +1,15 @@
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\bin\Debug\net7.0\HierarchicalView.Infrastructure.deps.json
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\bin\Debug\net7.0\HierarchicalView.Infrastructure.dll
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\bin\Debug\net7.0\HierarchicalView.Infrastructure.pdb
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\bin\Debug\net7.0\HierarchicalView.Domain.dll
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\bin\Debug\net7.0\HierarchicalView.Domain.pdb
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\HierarchicalView.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\HierarchicalView.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\HierarchicalView.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\HierarchicalView.Infrastructure.AssemblyInfo.cs
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\HierarchicalView.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\HierarchicalView.Infrastructure.csproj.CopyComplete
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\HierarchicalView.Infrastructure.dll
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\refint\HierarchicalView.Infrastructure.dll
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\HierarchicalView.Infrastructure.pdb
+C:\Users\Professional\source\repos\HierarchicalView\HierarchicalView.Infrastructure\obj\Debug\net7.0\ref\HierarchicalView.Infrastructure.dll
